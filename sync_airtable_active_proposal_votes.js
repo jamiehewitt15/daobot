@@ -29,7 +29,8 @@ const main = async () => {
         }
     }))
 
-    updateVotesActiveProposals(activeProposals, proposalVotes)
+    await updateVotesActiveProposals(activeProposals, proposalVotes)
+    console.log('Updated Airtable')
 }
 
 main()
