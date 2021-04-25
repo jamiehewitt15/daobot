@@ -42,7 +42,7 @@ const getVotes = async () => {
 
 const main = async () => {
     // await getProposals()
-    await getTopProposals()
+    await getActiveProposals()
     await getVotes()
 }
 
