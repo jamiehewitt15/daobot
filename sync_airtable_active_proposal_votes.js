@@ -1,10 +1,12 @@
-const {getActiveProposals, updateProposalRecords} = require('./airtable_utils');
-const {getProposalVotes, sumProposalVotes} = require('./snapshot_utils');
+const {getActiveProposals, updateProposalRecords, sumSnapshotVotesToAirtable} = require('./airtable_utils');
+const {getProposalVotes} = require('./snapshot_utils');
 const dotenv = require('dotenv');
 dotenv.config();
 
 var activeProposals = {}
 var proposalVotes = {}
+var proposalScores = {}
+var proposalVoteSummary = {}
 
 // DRY
 const getActiveProposalVotes = async () => {
@@ -24,7 +26,7 @@ const getActiveProposalVotes = async () => {
                 scores[choice] = scores[choice] === undefined ? 0 : scores[choice] + 1
             }, {})
 
-            proposalVotes[proposalId].scores = scores
+            proposalScores[proposalId] = scores
         } catch (err) {
             console.log(err)
         }
@@ -33,8 +35,8 @@ const getActiveProposalVotes = async () => {
 
 const main = async () => {
     await getActiveProposalVotes()
-    const records = await sumProposalVotes(activeProposals, proposalVotes)
-    await updateProposalRecords(records)
+    proposalVoteSummary = await sumSnapshotVotesToAirtable(activeProposals, proposalScores)
+    await updateProposalRecords(proposalVoteSummary)
     console.log('Updated Airtable')
 }
 

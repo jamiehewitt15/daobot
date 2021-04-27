@@ -4,8 +4,8 @@ const {google} = require('googleapis');
 
 const {getActiveProposals} = require('./airtable_utils');
 const {initOAuthToken} = require('./gsheets')
-const {getProposalData, addSheetsGranular, updateValues} = require('./gsheets_utils')
-const {getProposalVotes, sumProposalVotes} = require('./snapshot_utils');
+const {getProposalData, addSheetsGranular, sumSnapshotVotesToGSheets, updateValues} = require('./gsheets_utils')
+const {getProposalVotes} = require('./snapshot_utils');
 
 var activeProposals = {}
 var proposalVotes = {}
@@ -16,17 +16,12 @@ const updateGSheets = async (snapshotId) => {
     const oAuth = await initOAuthToken()
 
     var proposal = await getProposalData(oAuth, snapshotId, 'A1:B3')
-    var proposalSummary = await getProposalData(oAuth, snapshotId+'_SG', 'A1:B3')
-
     if (proposal === undefined) {
-        var newSheets = await addSheetsGranular(oAuth, 'afssadfas')
+        var newSheets = await addSheetsGranular(oAuth, snapshotId)
         console.log(newSheets)
-
-        proposal = newSheets.data.replies[0].addSheet.properties
-        proposalSummary = newSheets.data.replies[1].addSheet.properties
     }
 
-    // JS object to dataframe
+    // Flatten obj
     var flatObj = Object.entries(proposalVotes[snapshotId]).map((p) => {
         try {
             const signature = p[1]
@@ -95,7 +90,7 @@ const getActiveProposalVotes = async () => {
 const main = async () => {
     // Retrieve all active proposals from Airtable
     await getActiveProposalVotes()
-    proposalVoteSummary = await sumProposalVotes(activeProposals, proposalScores)
+    proposalVoteSummary = await sumSnapshotVotesToGSheets(activeProposals, proposalScores)
 
     // If we're reading from multiple proposals, we're going to write each of them out
     Object.entries(proposalVotes).map(async (p) => {
