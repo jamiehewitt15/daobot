@@ -34,29 +34,7 @@ const getActiveProposals = async () => {
     }
 }
 
-const updateVotesActiveProposals = async (proposals, votes) => {
-    let records = []
-    proposals.map((p) => {
-        const batchIndex = p.get('Snapshot Batch Index')
-        const snapshotId = p.get('Snapshot ID')
-
-        const yesIndex = batchIndex === undefined ? 1 : batchIndex
-        const noIndex = batchIndex === undefined ? 2 : undefined
-
-        const yesVotes = votes[snapshotId].scores[yesIndex]
-        const noVotes = noIndex === undefined ? 0 : votes[snapshotId].scores[noIndex]
-
-        records.push(
-            {
-                id: p.id,
-                fields: {
-                    "Voted Yes": yesVotes,
-                    "Voted No": noVotes
-                }
-            }
-        )
-    });
-
+const updateProposalRecords = async (records) => {
     const splitReocrds = splitArr(records, 10)
     await Promise.all(splitReocrds.map(batch =>
         fetch(`https://api.airtable.com/v0/${AIRTABLE_BASEID}/Proposals`, {
@@ -76,4 +54,4 @@ const updateVotesActiveProposals = async (proposals, votes) => {
     ))
 }
 
-module.exports = {getActiveProposals, updateVotesActiveProposals}
+module.exports = {getActiveProposals, updateProposalRecords}
