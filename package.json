@@ -11,10 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@snapshot-labs/lock": "github:snapshot-labs/lock#master",
+    "@snapshot-labs/snapshot-spaces": "github:snapshot-labs/snapshot-spaces#master",
+    "@snapshot-labs/snapshot.js": "github:snapshot-labs/snapshot.js#master",
     "airtable": "^0.11.0",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
-    "googleapis": "^71.0.0"
+    "googleapis": "^71.0.0",
+    "node-metamask": "^1.1.2",
+    "web3": "^1.2.11"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
