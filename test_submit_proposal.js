@@ -1,5 +1,5 @@
-const {infuraWeb3Provider} = require('./src/functions/web3')
-const client = require('./src/helpers/client.ts')
+const {infuraWeb3Provider} = require('./src/functions/web3.js')
+import {client} from './src/helpers/client.ts'
 
 const pk = process.env.ETH_PRIVATE_KEY || 'your_key_here';
 const space = 'officialoceandao.eth'
