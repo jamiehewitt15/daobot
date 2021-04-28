@@ -1,4 +1,4 @@
-const {infuraWeb3Provider} = require('./src/functions/web3')
+import infuraWeb3Provider from '@/functions/web3'
 
 const pk = process.env.ETH_PRIVATE_KEY || 'your_key_here';
 

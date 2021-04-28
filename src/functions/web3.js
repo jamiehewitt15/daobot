@@ -8,4 +8,6 @@ const infuraWeb3Provider = new Web3(new Web3.providers.HttpProvider(url));
 
 console.log("INFURA_API_URL", `https://mainnet.infura.io/v3/${INFURA_API_KEY}`);
 
-module.exports = {infuraWeb3Provider}
+// module.exports = {infuraWeb3Provider}
+export default infuraWeb3Provider;
+
